@@ -23,14 +23,17 @@ class Deck
     end
   end
 
-  def set_of_cards
-    [card, card]
+  def starter_set(gamer)
+    2.times do |_i|
+      card_arr = card
+      gamer.cards_in_hands[card_arr.first] = card_arr.last
+    end
   end
 
   def card
     card = @deck.keys.sample
     score = @deck.values_at(card)
     @deck.delete(card)
-    { card => score }
+    [card, score]
   end
 end
