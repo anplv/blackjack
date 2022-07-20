@@ -1,9 +1,9 @@
 class GameController
   attr_reader :user_name
 
-  ACTIONS = { 1 => 'Пропустить ход',
-              2 => 'Взять карту',
-              3 => 'Открыть карты' }.freeze
+  MOVES = { 1 => 'Пропустить ход',
+            2 => 'Взять карту',
+            3 => 'Открыть карты' }.freeze
 
   def initialize
     @deck = Deck.new
@@ -29,12 +29,12 @@ class GameController
 
   def show_cards
     puts 'Ваши карты:'
-    @gamer.cards_in_hands.each do |card|
+    @gamer.cards_in_hands.each_key do |card|
       print "|#{card}| "
     end
     puts "\n"
     puts '~' * 15
-    puts 'Карты дилера: '
+    puts 'Карты дилера:'
     puts '|*| ' * @dealer.cards_in_hands.size
     puts '~' * 15
   end
@@ -50,30 +50,24 @@ class GameController
 
   def show_moves
     puts 'Ваш ход! Введите номер действия, котрое хотите сделать:'
-    ACTIONS.each do |action_number, action|
-      puts "#{action_number} -> #{action}"
+    MOVES.each do |move_number, move|
+      puts "#{move_number} -> #{move}"
     end
   end
 
-  def select_move
-    action_number = gets.to_i
-    case action_number
+  def gamer_choice
+    move_number = gets.to_i
+    case move_number
     when 1
       @gamer.to_pass
       puts 'Вы пассуете!'
+      dealer_move
     when 2
       @gamer.take_card(@deck)
-
-      # Здесь new_card присваивается ключ последнего вложенного хэша в массиве
-      new_card = @gamer.cards_in_hands.last.keys.first
+      new_card = @gamer.cards_in_hands.keys.last
       puts "Новая карта: |#{new_card}|."
     when 3
       @gamer.open_cards
     end
   end
-
-  # def dealer_move
-  #   if
-
-  # end
 end
