@@ -6,7 +6,7 @@ class Gamer
 
   def initialize(name)
     @name = name
-    @cash_account = 10
+    @cash_account = 100
     @cards_in_hands = {}
     @wins = 0
     @points = 0
@@ -30,18 +30,28 @@ class Gamer
   def points
     points_without_ace = @cards_in_hands.reject { |card, _points| card.include? 'A' }
     @points = points_without_ace.values.sum
-    @points += if @cards_in_hands.values.include?(11) && @points > 10
-                 1
-               elsif @cards_in_hands.values.include?(11) && @points <= 10
-                 11
-               else
-                 0
-               end
+    check_ace
     @points
   end
 
+  def check_ace
+    count_ace = @cards_in_hands.values.count(11)
+    @points += if @cards_in_hands.values.include?(11) && @points > 10 && count_ace == 1
+                 1
+               elsif @cards_in_hands.values.include?(11) && @points <= 10 && count_ace == 1
+                 11
+               elsif @cards_in_hands.values.include?(11) && @points > 9 && count_ace == 2
+                 12
+               elsif @cards_in_hands.values.include?(11) && @points < 9 && count_ace == 2
+                 2
+               else
+                 0
+               end
+  end
+
   def bust?
-    @points > 21
+    points
+    true if @points > 21
   end
 
   def fold_cards
