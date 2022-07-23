@@ -11,7 +11,8 @@ def start
 end
 
 start
-loop do
+
+def gameplay
   @controller.start
   @controller.show_cards
   @controller.to_bet
@@ -21,9 +22,21 @@ loop do
   @controller.scoring
   @controller.game_score
   @controller.match_score
-  if !@controller.game_over?
-    @controller.new_game?
-  elsif @controller.game_over?
-    start if @controller.new_match?
+end
+
+def game_over?
+  if @controller.game_over?
+    if @controller.new_match?
+      start
+      return
+    else
+      abort
+    end
   end
+  abort unless @controller.new_game?
+end
+
+loop do
+  gameplay
+  game_over?
 end
