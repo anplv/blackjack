@@ -1,5 +1,5 @@
-class Dealer
-  def initialize
-    @cash_account = 100
-  end
+# frozen_string_literal: true
+
+require_relative 'gamer'
+class Dealer < Gamer
 end
