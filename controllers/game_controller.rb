@@ -27,13 +27,6 @@ class GameController
     puts 'Игра началась!'
   end
 
-  def loading
-    (['/', '—', '\\', '|'] * 4).each do |item|
-      print "#{item}\r"
-      sleep 0.2
-    end
-  end
-
   def show_cards
     puts "\nВаши карты:"
     @gamer.cards_in_hands.each_key do |card|
@@ -79,27 +72,6 @@ class GameController
     end
   end
 
-  def gamer_pass
-    @gamer.to_pass
-    puts "\nВы пасуете!"
-    dealer_choice
-  end
-
-  def gamer_take_card
-    @gamer.take_card(@deck)
-    new_card = @gamer.cards_in_hands.keys.last
-    puts "\nНовая карта: |#{new_card}|."
-    dealer_choice
-  end
-
-  def open_cards
-    puts "\nВы открываете карты!"
-    puts "\nВаши карты:"
-    puts @gamer.open_cards
-    puts "\nКарты дилера:"
-    puts @dealer.open_cards
-  end
-
   def dealer_choice
     score_sum = @dealer.cards_in_hands.values.sum
     if score_sum >= 17
@@ -108,16 +80,6 @@ class GameController
       dealer_take_card
     end
     open_cards
-  end
-
-  def dealer_pass
-    @dealer.to_pass
-    puts "\nДилер пасует!"
-  end
-
-  def dealer_take_card
-    @dealer.take_card(@deck)
-    puts "\nДилер берет карту!"
   end
 
   def scoring
@@ -137,27 +99,6 @@ class GameController
       puts 'Ничья!'
       @dealer.cash_account += 10
       @gamer.cash_account += 10
-    end
-  end
-
-  def bust?
-    if @gamer.bust? && !@dealer.bust?
-      puts 'Вы проиграли! Перебор.'
-      @dealer.wins += 1
-      @dealer.cash_account += 20
-      true
-    elsif !@gamer.bust? && @dealer.bust?
-      puts 'Вы выиграли! У дилера перебор.'
-      @gamer.wins += 1
-      @gamer.cash_account += 20
-      true
-    elsif @gamer.bust? && @dealer.bust?
-      puts 'Ничья! У обоих игроков перебор.'
-      @dealer.cash_account += 10
-      @gamer.cash_account += 10
-      true
-    else
-      false
     end
   end
 
@@ -206,6 +147,67 @@ class GameController
       puts 'Вы выиграли игру!'
       show_bank
       match_score
+      true
+    else
+      false
+    end
+  end
+
+  private
+
+  def loading
+    (['/', '—', '\\', '|'] * 4).each do |item|
+      print "#{item}\r"
+      sleep 0.2
+    end
+  end
+
+  def gamer_pass
+    @gamer.to_pass
+    puts "\nВы пасуете!"
+    dealer_choice
+  end
+
+  def gamer_take_card
+    @gamer.take_card(@deck)
+    new_card = @gamer.cards_in_hands.keys.last
+    puts "\nНовая карта: |#{new_card}|."
+    dealer_choice
+  end
+
+  def open_cards
+    puts "\nВы открываете карты!"
+    puts "\nВаши карты:"
+    puts @gamer.open_cards
+    puts "\nКарты дилера:"
+    puts @dealer.open_cards
+  end
+
+  def dealer_pass
+    @dealer.to_pass
+    puts "\nДилер пасует!"
+  end
+
+  def dealer_take_card
+    @dealer.take_card(@deck)
+    puts "\nДилер берет карту!"
+  end
+
+  def bust?
+    if @gamer.bust? && !@dealer.bust?
+      puts 'Вы проиграли! Перебор.'
+      @dealer.wins += 1
+      @dealer.cash_account += 20
+      true
+    elsif !@gamer.bust? && @dealer.bust?
+      puts 'Вы выиграли! У дилера перебор.'
+      @gamer.wins += 1
+      @gamer.cash_account += 20
+      true
+    elsif @gamer.bust? && @dealer.bust?
+      puts 'Ничья! У обоих игроков перебор.'
+      @dealer.cash_account += 10
+      @gamer.cash_account += 10
       true
     else
       false

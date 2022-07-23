@@ -34,6 +34,18 @@ class Gamer
     @points
   end
 
+  def bust?
+    points
+    true if @points > 21
+  end
+
+  def fold_cards
+    @cards_in_hands.clear
+    @points = 0
+  end
+
+  private
+
   def check_ace
     count_ace = @cards_in_hands.values.count(11)
     @points += if @cards_in_hands.values.include?(11) && @points > 10 && count_ace == 1
@@ -47,15 +59,5 @@ class Gamer
                else
                  0
                end
-  end
-
-  def bust?
-    points
-    true if @points > 21
-  end
-
-  def fold_cards
-    @cards_in_hands.clear
-    @points = 0
   end
 end
