@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
+require_relative '../modules/validation'
 class GameController
+  include Validation
+
   attr_reader :user_name
 
   MOVES = { 1 => 'Пропустить ход',
@@ -59,6 +62,7 @@ class GameController
 
   def gamer_choice
     move_number = gets.to_i
+    valid_input?(move_number)
     case move_number
     when 1
       system('clear')

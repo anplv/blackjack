@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 
+require_relative '../modules/validation'
 class Gamer
+  include Validation
   attr_reader :name, :cards_in_hands, :cards_out_hands
   attr_accessor :wins, :cash_account
 
   def initialize(name)
     @name = name
+    valid_name?(name)
     @cash_account = 100
     @cards_in_hands = {}
     @wins = 0
