@@ -11,7 +11,7 @@ module Validation
     end
 
     def valid_input?(input)
-      raise 'Неверно выбран номер!' unless %w[1 2 3].include?(input)
+      raise 'Неверно выбран номер!' unless [1, 2, 3].include?(input)
     end
   end
 end
